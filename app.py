@@ -2,6 +2,7 @@ from flask import Flask
 import requests
 
 import time
+import json
 
 app = Flask(__name__)
 
@@ -57,4 +58,5 @@ def main():
 
     elapsed_time = time.perf_counter() - start_time
     print(f'Elapsed time: {elapsed_time:0.2f}')
-    return web.Response(text=json.dumps(entries))
+    
+    return jsonify(entries)
