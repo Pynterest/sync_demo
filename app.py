@@ -16,6 +16,7 @@ def normalize_reddit_no_image(url, category):
     """
     print('url start', url)
     response = requests.get(url).json()
+    print("RRRRRRESPONSE", response)
     print('url done', url)
 
     entries = response['data']['children']
