@@ -8,6 +8,37 @@ import json
 app = Flask(__name__)
 
 
+def normalize_reddit_webdev(url, category):
+    """
+    Takes in a URL string to WebDev Subreddit.
+    Awaits a fetch coroutine, then normalizes the payload.
+    Returns the normalized entries.
+    """
+    headers = {
+        'User-Agent': 'Heroku:42:1.0.0 (by /u/sburger)'
+    }
+    print('url start', url)
+    response = requests.get(url, headers=headers).json()
+    print('url done', url)
+    
+    entries = response['data']['children']
+    normalized_entries = {
+        'source': 'reddit',
+        'category': category,
+        'data':[]
+    }
+
+    for entry in entries:
+        normalized_entries['data'].append({
+            'title': entry['data'].get('title', None),
+            'link': entry['data'].get('permalink', None),
+            #some results have thumbnail urls
+            'thumbnail': entry['data'].get('thumbnail', None),
+        })
+
+    return normalized_entries
+
+
 def normalize_reddit_programmerhumor(url, category):
     """
     Takes in a URL string to Programmer Humor Subreddit.
@@ -79,11 +110,15 @@ def normalize_pypi(url, category):
     feed_data = feedparser.parse(r.content)
     print('url done', url)
     entries = feed_data.entries
-    normalized_entries = []
+    
+    normalized_entries = {
+        'source': 'pypi',
+        'category': category,
+        'data':[]
+    }
+
     for entry in entries:
-        normalized_entries.append({
-            'source': 'pypi',
-            'category': category,
+        normalized_entries['data'].append({
             'title': entry['title'],
             'link': entry['link'],
             'desc': entry['summary']
@@ -102,18 +137,21 @@ def normalize_github(url, category):
     response = requests.get(url).json()
     print('url done', url)
     entries = response['items']
-    normalized_entries = []
+    
+    normalized_entries = {
+        'source': 'github',
+        'category': category,
+        'data':[]
+    }
 
     for entry in entries:
-        normalized_entries.append({
-            'source': 'github',
-            'category': category,
+        normalized_entries['data'].append({
             'title': entry['name'],
             'link': entry['html_url'],
             'desc': entry['description'],
             'stars': entry['stargazers_count']
         })
-  
+
     return normalized_entries
 
 
