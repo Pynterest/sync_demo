@@ -23,7 +23,7 @@ def normalize_github(url, category):
     response = requests.get(url).json()
     print('url done', url)
     entries = response['items']
-    normalized_entries = []g
+    normalized_entries = []
 
     for entry in entries:
         normalized_entries.append({
