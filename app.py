@@ -33,7 +33,7 @@ def normalize_github(url, category):
             'desc': entry['description'],
             'stars': entry['stargazers_count']
         })
-
+  
     return normalized_entries
 
 
