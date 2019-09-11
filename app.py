@@ -20,7 +20,7 @@ def normalize_pypi(url, category):
     print('url start', url)
     r = requests.get(url)
     print("RRRRRRR", r)
-    feed_data = feedparser.parse(r)
+    feed_data = feedparser.parse(r.content)
     print('url done', url)
     entries = feed_data.entries
     normalized_entries = []
