@@ -10,12 +10,32 @@ app = Flask(__name__)
 
 
 
+def normalize_pypi(url, category):
+    """
+    Takes in a URL string to PyPI and a category string.
+    Awaits a fetch coroutine, then normalizes the payload.
+    Returns the normalized entries.
+    """
+    print('url start', url)
+    feed_data = feedparser.parse(requests.get(url))
+    print('url done', url)
+    entries = feed_data.entries
+    normalized_entries = []
+    for entry in entries:
+        normalized_entries.append({
+            'source': 'pypi',
+            'category': category,
+            'title': entry['title'],
+            'link': entry['link'],
+            'desc': entry['summary']
+        })
 
+    return normalized_entries
 
 
 def normalize_github(url, category):
     """
-    Takes in a ClientSession and a URL string to GitHub.
+    Takes in a URL string to GitHub and a category string.
     Awaits a fetch coroutine, then normalizes the payload.
     Returns the normalized entries.
     """
@@ -53,8 +73,8 @@ def main():
     # entries.append(normalize_reddit_programmerhumor('https://www.reddit.com/r/programmerhumor/.json?', 'programmerhumor'))
     # entries.append(normalize_reddit_no_image('https://www.reddit.com/r/python/.json?', 'python'))
     # entries.append(normalize_reddit_no_image('https://www.reddit.com/r/learnprogramming/.json?', 'learnprogramming'))
-    # entries.append(normalize_pypi('https://pypi.org/rss/updates.xml', 'updated'))
-    # entries.append(normalize_pypi('https://pypi.org/rss/packages.xml', 'newest'))
+    entries.append(normalize_pypi('https://pypi.org/rss/updates.xml', 'updated'))
+    entries.append(normalize_pypi('https://pypi.org/rss/packages.xml', 'newest'))
 
     elapsed_time = time.perf_counter() - start_time
     print(f'Elapsed time: {elapsed_time:0.2f}')
