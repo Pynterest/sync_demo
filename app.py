@@ -14,8 +14,11 @@ def normalize_reddit_no_image(url, category):
     Awaits a fetch coroutine, then normalizes the payload.
     Returns the normalized entries.
     """
+    headers = {
+        'User-Agent': 'Heroku:42:1.0.0 (by /u/sburger)'
+    }
     print('url start', url)
-    response = requests.get(url).json()
+    response = requests.get(url, headers=headers).json()
     print("RRRRRRESPONSE", response)
     print('url done', url)
 
@@ -43,7 +46,6 @@ def normalize_pypi(url, category):
     """
     print('url start', url)
     r = requests.get(url)
-    print("RRRRRRR", r)
     feed_data = feedparser.parse(r.content)
     print('url done', url)
     entries = feed_data.entries
