@@ -46,14 +46,14 @@ def main():
     start_time = time.perf_counter()
     entries = []
 
-    entries.append(normalize_github(session, 'https://api.github.com/search/repositories?q=language:python&sort=stars&order=desc', 'popular'))
-    entries.append(normalize_github(session, 'https://api.github.com/search/repositories?q=language:python&sort=updated&order=desc', 'updated'))
-    # entries.append(normalize_reddit_webdev(session, 'https://www.reddit.com/r/webdev/.json?', 'webdev'))
-    # entries.append(normalize_reddit_programmerhumor(session, 'https://www.reddit.com/r/programmerhumor/.json?', 'programmerhumor'))
-    # entries.append(normalize_reddit_no_image(session, 'https://www.reddit.com/r/python/.json?', 'python'))
-    # entries.append(normalize_reddit_no_image(session, 'https://www.reddit.com/r/learnprogramming/.json?', 'learnprogramming'))
-    # entries.append(normalize_pypi(session, 'https://pypi.org/rss/updates.xml', 'updated'))
-    # entries.append(normalize_pypi(session, 'https://pypi.org/rss/packages.xml', 'newest'))
+    entries.append(normalize_github('https://api.github.com/search/repositories?q=language:python&sort=stars&order=desc', 'popular'))
+    entries.append(normalize_github('https://api.github.com/search/repositories?q=language:python&sort=updated&order=desc', 'updated'))
+    # entries.append(normalize_reddit_webdev('https://www.reddit.com/r/webdev/.json?', 'webdev'))
+    # entries.append(normalize_reddit_programmerhumor('https://www.reddit.com/r/programmerhumor/.json?', 'programmerhumor'))
+    # entries.append(normalize_reddit_no_image('https://www.reddit.com/r/python/.json?', 'python'))
+    # entries.append(normalize_reddit_no_image('https://www.reddit.com/r/learnprogramming/.json?', 'learnprogramming'))
+    # entries.append(normalize_pypi('https://pypi.org/rss/updates.xml', 'updated'))
+    # entries.append(normalize_pypi('https://pypi.org/rss/packages.xml', 'newest'))
 
     elapsed_time = time.perf_counter() - start_time
     print(f'Elapsed time: {elapsed_time:0.2f}')
