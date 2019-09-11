@@ -20,10 +20,10 @@ def normalize_github(url, category):
     Returns the normalized entries.
     """
     print('url start', url)
-    response = json.loads(requests.get(url))
+    response = requests.get(url).json()
     print('url done', url)
     entries = response['items']
-    normalized_entries = []
+    normalized_entries = []g
 
     for entry in entries:
         normalized_entries.append({
