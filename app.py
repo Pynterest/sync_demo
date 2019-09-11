@@ -18,7 +18,8 @@ def normalize_pypi(url, category):
     Returns the normalized entries.
     """
     print('url start', url)
-    feed_data = feedparser.parse(requests.get(url))
+    r = requests.get(url)
+    feed_data = feedparser.parse(r)
     print('url done', url)
     entries = feed_data.entries
     normalized_entries = []
