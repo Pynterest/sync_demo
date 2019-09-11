@@ -8,6 +8,37 @@ import json
 app = Flask(__name__)
 
 
+def normalize_reddit_programmerhumor(url, category):
+    """
+    Takes in a URL string to Programmer Humor Subreddit.
+    Awaits a fetch coroutine, then normalizes the payload.
+    Returns the normalized entries.
+    """
+    headers = {
+        'User-Agent': 'Heroku:42:1.0.0 (by /u/sburger)'
+    }
+    print('url start', url)
+    response = requests.get(url, headers=headers).json()
+    print('url done', url)
+
+    entries = response['data']['children']
+    normalized_entries = {
+        'source': 'reddit',
+        'category': category,
+        'data':[]
+    }
+
+    for entry in entries:
+
+        normalized_entries['data'].append({
+            'title': entry['data'].get('title', None),
+            'link': entry['data'].get('permalink', None),
+            'image': entry['data'].get('url', None),
+        })
+
+    return normalized_entries
+
+
 def normalize_reddit_no_image(url, category):
     """
     Takes in a URL string to Python Subreddit and a category string.
@@ -19,7 +50,6 @@ def normalize_reddit_no_image(url, category):
     }
     print('url start', url)
     response = requests.get(url, headers=headers).json()
-    print("RRRRRRESPONSE", response)
     print('url done', url)
 
     entries = response['data']['children']
@@ -99,7 +129,7 @@ def main():
     entries.append(normalize_github('https://api.github.com/search/repositories?q=language:python&sort=stars&order=desc', 'popular'))
     entries.append(normalize_github('https://api.github.com/search/repositories?q=language:python&sort=updated&order=desc', 'updated'))
     # entries.append(normalize_reddit_webdev('https://www.reddit.com/r/webdev/.json?', 'webdev'))
-    # entries.append(normalize_reddit_programmerhumor('https://www.reddit.com/r/programmerhumor/.json?', 'programmerhumor'))
+    entries.append(normalize_reddit_programmerhumor('https://www.reddit.com/r/programmerhumor/.json?', 'programmerhumor'))
     entries.append(normalize_reddit_no_image('https://www.reddit.com/r/python/.json?', 'python'))
     entries.append(normalize_reddit_no_image('https://www.reddit.com/r/learnprogramming/.json?', 'learnprogramming'))
     entries.append(normalize_pypi('https://pypi.org/rss/updates.xml', 'updated'))
